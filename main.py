@@ -3,7 +3,7 @@ import sys # 시스템 제어 관련 모듈
 
 # 위젯이란 : GUI 프로그램에서 구성요소를 뜻하는 용어
 from PyQt5.QtWidgets import (QApplication, QWidget, QPushButton, QVBoxLayout,
-                             QMessageBox, QPlainTextEdit)
+                             QMessageBox, QPlainTextEdit, QHBoxLayout)
 from PyQt5.QtGui import QIcon
 
 # 나는 계산기 유형을 직접 정의한다! 이때, QWidget에 기반을 둔다
@@ -22,11 +22,18 @@ class Calculator(QWidget) :
 
         # 이벤트 핸들링 : 클릭했을 때, 뭐를 할거다! 라고 정하는 것. 
         self.btn1.clicked.connect(self.activateMessage)
+        self.btn2=QPushButton('clear',self)
+        self.btn2.clicked.connect(self.clearMessage)
+
+        hbox = QHBoxLayout()
+        hbox.addStretch(1)
+        hbox.addWidget(self.btn1)
+        hbox.addWidget(self.btn2)
 
         # 레이아웃 설정 
         vbox = QVBoxLayout()
         vbox.addWidget(self.te1)
-        vbox.addWidget(self.btn1)
+        vbox.addLayout(hbox)
         vbox.addStretch(1)
 
         self.setLayout(vbox) # 설정 적용 
@@ -35,7 +42,8 @@ class Calculator(QWidget) :
         self.setWindowIcon(QIcon("icon.png"))
         self.resize(256, 256)
         self.show()
-
+    def clearMessage(self) :
+        self.te1.clear()
     def activateMessage(self) :
         # QMessageBox.information(self, "infomation", "Button Clicked!")
         self.te1.appendPlainText("Hello, PyQt App!")
